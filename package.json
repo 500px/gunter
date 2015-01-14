@@ -1,0 +1,20 @@
+{
+  "name": "gunter",
+  "version": "0.1.0",
+  "description": "Language agnostic task wrapper",
+  "main": "lib/gunter.js",
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "author": "500px",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "should": "^4.6.0"
+  },
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "sequest": "^0.7.0",
+    "shelljs": "^0.3.0"
+  }
+}
