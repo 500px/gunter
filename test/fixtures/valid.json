@@ -1,0 +1,11 @@
+{
+  "taskname" : {
+    "remote" : "localhost",
+    "cwd" : "/",
+    "commands" : [
+      "echo I'm a task!",
+      "echo I'm another task!",
+      "echo Hello, my name is {{name}}"
+    ]
+  }
+}

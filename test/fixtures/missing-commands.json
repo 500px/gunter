@@ -1,0 +1,6 @@
+{
+  "taskname" : {
+    "remote" : "localhost",
+    "cwd" : "/"
+  }
+}
