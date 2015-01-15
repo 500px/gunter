@@ -1,0 +1,20 @@
+{
+  "task1" : {
+    "remote" : "localhost",
+    "cwd" : "/",
+    "commands" : [
+      "echo I'm a task!",
+      "echo I'm another task!",
+      "echo Hello, my name is {{name}}"
+    ]
+  },
+  "task2" : {
+    "remote" : "localhost",
+    "cwd" : "/",
+    "commands" : {
+      "command1" : "echo I'm a task!",
+      "command2" : "echo I'm another task!",
+      "command3" : "echo Hello, my name is {{name}}"
+    }
+  }
+}

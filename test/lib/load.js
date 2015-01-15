@@ -83,7 +83,25 @@ describe('load', function(){
       });
     });
 
-    describe('when there are multiple tasks', function() {
+    describe('when commands are not in an array', function(){
+      var tasks = {
+        taskname: {
+          remote: "localhost",
+          cwd: "/",
+          commands: {
+            command1: "echo I'm a task!",
+            command2: "echo I'm another task!",
+            command3: "echo Hello, my name is {{name}}"
+          }
+        }
+      }
+
+      it('throws an error', function(){
+        load.bind(null, tasks).should.throw();
+      });
+    });
+
+    describe('when adding multiple tasks', function() {
       describe('when object is valid', function(){
         var tasks = {
           task1: {
@@ -153,6 +171,53 @@ describe('load', function(){
         });
       });
     });
+
+    describe('when there are already tasks loaded', function() {
+      it('concatenates the tasks together', function(){
+        taskList = {
+          task1: {
+            remote: "localhost",
+            cwd: "/",
+            commands: [
+              "echo I'm a task!",
+              "echo I'm another task!",
+              "echo Hello, my name is {{name}}"
+            ]
+          }
+        }
+
+        var tasks = {
+          task2: {
+            remote: "localhost",
+            cwd: "/",
+            commands: [
+              "echo I'm a task!"
+            ]
+          }
+        }
+
+        load(tasks);
+
+        taskList.should.containEql({
+          task1: {
+            remote: "localhost",
+            cwd: "/",
+            commands: [
+              "echo I'm a task!",
+              "echo I'm another task!",
+              "echo Hello, my name is {{name}}"
+            ]
+          },
+          task2: {
+            remote: "localhost",
+            cwd: "/",
+            commands: [
+              "echo I'm a task!"
+            ]
+          }
+        });
+      });
+    });
   });
 
   describe('when passed a file path', function(){
@@ -163,7 +228,16 @@ describe('load', function(){
         it('adds the tasks to the global taskList', function(){
           load(filepath)
           taskList.should.containEql({
-            "taskname" : {
+            "task1" : {
+              "remote" : "localhost",
+              "cwd" : "/",
+              "commands" : [
+                "echo I'm a task!",
+                "echo I'm another task!",
+                "echo Hello, my name is {{name}}"
+              ]
+            },
+            "task2" : {
               "remote" : "localhost",
               "cwd" : "/",
               "commands" : [
@@ -194,6 +268,14 @@ describe('load', function(){
 
       describe('when JSON is missing commands', function(){
         var filepath = '../test/fixtures/missing-commands.json';
+
+        it('throws an error', function(){
+          load.bind(null, filepath).should.throw();
+        });
+      });
+
+      describe('when commands are not in an array', function(){
+        var filepath = '../test/fixtures/commands-not-array.json';
 
         it('throws an error', function(){
           load.bind(null, filepath).should.throw();
