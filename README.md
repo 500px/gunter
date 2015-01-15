@@ -1,5 +1,7 @@
 # Gunter
 
+![Gunter](gunter.png)
+
 Wenk.
 
 Language agnostic task wrapper and loyal servant.  Runs arbitrary shell commands
