@@ -69,8 +69,8 @@ your tasks, and values containing what they should be replaced by.
 Example:
 ```js
 {
-  name: "Gunter",
-  description: "Wenk"
+  "name" : "Gunter",
+  "description" : "Wenk"
 }
 ```
 
