@@ -6,7 +6,7 @@ describe('exec', function(){
     taskList = {
       task: {
         remote: "localhost",
-        cwd: "/",
+        cwd: "../test",
         commands: [
           "echo {{cool}}!"
         ]
@@ -36,7 +36,16 @@ describe('exec', function(){
 
       describe('when task is defined', function(){
         describe('when remote is localhost', function(){
-          it('executes the commands locally, in the cwd');
+          it('executes the commands locally', function(){
+            var result = exec('task');
+            result.should.containEql({
+              remote: "localhost",
+              cwd: "../test",
+              commands: [
+                "echo {{cool}}!"
+              ]
+            });
+          });
         });
 
         describe('when remote is some server', function(){
@@ -44,7 +53,7 @@ describe('exec', function(){
             taskList = {
               task: {
                 remote: "root@some.server.net",
-                cwd: "/",
+                cwd: "../test",
                 commands: [
                   "echo {{cool}}!"
                 ]
@@ -52,7 +61,7 @@ describe('exec', function(){
             }
           });
 
-          it('executes the commands on the server, in the cwd');
+          it('executes the commands on the server');
         });
       });
     });
@@ -65,7 +74,7 @@ describe('exec', function(){
           var result = exec('task', { cool: 'fool' });
           result.should.containEql({
             remote: "localhost",
-            cwd: "/",
+            cwd: "../test",
             commands: [
               "echo fool!"
             ]
@@ -83,7 +92,7 @@ describe('exec', function(){
 
             result.should.containEql({
               remote: "localhost",
-              cwd: "/",
+              cwd: "../test",
               commands: [
                 "echo fool!"
               ]
