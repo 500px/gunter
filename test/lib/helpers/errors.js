@@ -22,6 +22,16 @@ describe('errors', function(){
     });
   });
 
+  describe('checkString', function(){
+    it('should be defined', function(){
+      errors.checkString.should.exist;
+    });
+
+    it('should be a function', function(){
+      errors.checkString.should.be.a.Function;
+    });
+  });
+
   describe('checkArray', function(){
     it('should be defined', function(){
       errors.checkArray.should.exist;
