@@ -1,6 +1,5 @@
-# Gunter
+# Gunter [![Build Status](https://magnum.travis-ci.com/500px/gunter.svg?token=xbayY4WQuW55u1swFMoe)](https://magnum.travis-ci.com/500px/gunter)
 
-[![Build Status](https://magnum.travis-ci.com/500px/gunter.svg?token=xbayY4WQuW55u1swFMoe)](https://magnum.travis-ci.com/500px/gunter)
 ![Gunter](gunter.png)
 
 Wenk.
