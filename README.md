@@ -25,7 +25,7 @@ Tasks are represented as JSON objects, taking the form:
 ```
 
 Notice the [mustache-style](http://mustache.github.io/) variable.  This is
-filled in at execution time by a variables object passed to the `exec` function.
+filled in at execution time by a `vars` object passed to the `exec` function.
 
 ## API
 
@@ -78,4 +78,4 @@ Example:
 
 + ShellJS for running local commands
 + Sequest for running remote commands
-+ Lodash for not hating my life
++ Lo-Dash for not hating my life
