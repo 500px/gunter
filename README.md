@@ -41,7 +41,7 @@ will append tasks to the list of previously defined tasks.
 
 Type: `Object` or `String`
 
-You can pass it either an Object, or the absolute path to a JSON file.
+You can pass it either an Object, or the path to a JSON file.
 
 ### .clear()
 
@@ -62,9 +62,9 @@ The name of the task to execute, as defined in a previously loaded JSON object.
 Type: `Object` or `String`
 
 This optional parameter is for filling in variables defined in previously loaded
-JSON tasks.  Like `load`, it accepts either an Object or the absolute path
-to a JSON file.  Here you should pass in keys matching the variable names in
-your tasks, and values containing what they should be replaced by.
+JSON tasks.  Like `load`, it accepts either an Object or the path to a JSON
+file.  Here you should pass in keys matching the variable names in your tasks,
+and values containing what they should be replaced by.
 
 Example:
 ```js

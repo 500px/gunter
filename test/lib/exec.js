@@ -12,7 +12,7 @@ describe('exec', function(){
         ]
       }
     }
-  })
+  });
 
   describe('when passed only a name', function(){
     describe('when name is not a String', function(){
@@ -40,6 +40,18 @@ describe('exec', function(){
         });
 
         describe('when remote is some server', function(){
+          beforeEach(function(){
+            taskList = {
+              task: {
+                remote: "root@some.server.net",
+                cwd: "/",
+                commands: [
+                  "echo {{cool}}!"
+                ]
+              }
+            }
+          });
+
           it('executes the commands on the server, in the cwd');
         });
       });
@@ -49,12 +61,15 @@ describe('exec', function(){
   describe('when passed vars', function(){
     describe('when vars are an Object', function(){
       describe('when vars match variables in the task', function(){
-        it('replaces the variables with values in var');
-      });
-
-      describe('when vars do not match variables in the task', function(){
-        it('throws an error', function(){
-          exec.bind(null, 'task', { 'wenk' : 'wenk' }).should.throw();
+        it('replaces the variables with values in var', function(){
+          var result = exec('task', { cool: 'fool' });
+          result.should.containEql({
+            remote: "localhost",
+            cwd: "/",
+            commands: [
+              "echo fool!"
+            ]
+          });
         });
       });
     });
@@ -62,11 +77,18 @@ describe('exec', function(){
     describe('when vars are a String path', function(){
       describe('when the path is valid', function(){
         describe('when vars match variables in the task', function(){
-          it('replaces the variables with values in var');
-        });
+          it('replaces the variables with values in file', function(){
+            var filepath = '../test/fixtures/exec/valid-vars.json';
+            var result = exec('task', filepath);
 
-        describe('when vars do not match variables in the task', function(){
-          it('throws an error');
+            result.should.containEql({
+              remote: "localhost",
+              cwd: "/",
+              commands: [
+                "echo fool!"
+              ]
+            });
+          });
         });
       });
 

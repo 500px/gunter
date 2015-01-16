@@ -21,7 +21,7 @@ describe('load', function(){
       }
 
       it('adds the tasks to the global taskList', function(){
-        load(tasks)
+        load(tasks);
         taskList.should.containEql({
           taskname: {
             remote: "localhost",
@@ -125,7 +125,7 @@ describe('load', function(){
         }
 
         it('adds the tasks to the global taskList', function(){
-          load(tasks)
+          load(tasks);
           taskList.should.containEql({
             task1: {
               remote: "localhost",
@@ -223,7 +223,7 @@ describe('load', function(){
   describe('when passed a file path', function(){
     describe('when path leads to JSON file', function(){
       describe('when JSON is valid', function(){
-        var filepath = '../test/fixtures/valid.json';
+        var filepath = '../test/fixtures/load/valid.json';
 
         it('adds the tasks to the global taskList', function(){
           load(filepath)
@@ -251,7 +251,7 @@ describe('load', function(){
       });
 
       describe('when JSON is missing remote', function(){
-        var filepath = '../test/fixtures/missing-remote.json';
+        var filepath = '../test/fixtures/load/missing-remote.json';
 
         it('throws an error', function(){
           load.bind(null, filepath).should.throw();
@@ -259,7 +259,7 @@ describe('load', function(){
       });
 
       describe('when JSON is missing cwd', function(){
-        var filepath = '../test/fixtures/missing-cwd.json';
+        var filepath = '../test/fixtures/load/missing-cwd.json';
 
         it('throws an error', function(){
           load.bind(null, filepath).should.throw();
@@ -267,7 +267,7 @@ describe('load', function(){
       });
 
       describe('when JSON is missing commands', function(){
-        var filepath = '../test/fixtures/missing-commands.json';
+        var filepath = '../test/fixtures/load/missing-commands.json';
 
         it('throws an error', function(){
           load.bind(null, filepath).should.throw();
@@ -275,7 +275,7 @@ describe('load', function(){
       });
 
       describe('when commands are not in an array', function(){
-        var filepath = '../test/fixtures/commands-not-array.json';
+        var filepath = '../test/fixtures/load/commands-not-array.json';
 
         it('throws an error', function(){
           load.bind(null, filepath).should.throw();
