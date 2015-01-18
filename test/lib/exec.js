@@ -52,7 +52,7 @@ describe('exec', function(){
           beforeEach(function(){
             taskList = {
               task: {
-                remote: "root@some.server.net",
+                remote: "root@127.0.0.1",
                 cwd: "../test",
                 commands: [
                   "echo {{cool}}!"
@@ -61,7 +61,17 @@ describe('exec', function(){
             }
           });
 
-          it('executes the commands on the server');
+          // Connection refused, I should find a way to stub this
+          xit('executes the commands on the server', function(){
+            var result = exec('task');
+            result.should.containEql({
+              remote: "root@127.0.0.1",
+              cwd: "../test",
+              commands: [
+                "echo {{cool}}!"
+              ]
+            });
+          });
         });
       });
     });
