@@ -1,13 +1,38 @@
 {
   "name": "gunter",
   "version": "0.1.0",
+  "license": "MIT",
   "description": "Language agnostic task wrapper",
+  "author": "500px",
+  "contributors": [
+    {
+      "name": "Devon Noel de Tilly",
+      "email": "devon@500px.com"
+    }
+  ],
   "main": "lib/gunter.js",
   "scripts": {
     "test": "mocha --recursive"
   },
-  "author": "500px",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/500px/gunter"
+  },
+  "bugs": {
+    "url": "https://github.com/500px/gunter/issues"
+  },
+  "keywords": [
+    "task",
+    "wrapper",
+    "system",
+    "command",
+    "shell",
+    "ssh",
+    "tool"
+  ],
+  "engines": {
+    "node": ">= 0.10.0"
+  },
   "devDependencies": {
     "mocha": "^2.1.0",
     "should": "^4.6.0"
