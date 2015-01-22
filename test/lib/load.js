@@ -3,7 +3,7 @@ var load = require('../../lib/load');
 
 describe('load', function(){
   beforeEach(function(){
-    taskList = {}
+    global.taskList = {}
   })
 
   describe('when passed an object', function(){
@@ -22,7 +22,7 @@ describe('load', function(){
 
       it('adds the tasks to the global taskList', function(){
         load(tasks);
-        taskList.should.containEql({
+        global.taskList.should.containEql({
           taskname: {
             remote: "localhost",
             cwd: "/",
@@ -126,7 +126,7 @@ describe('load', function(){
 
         it('adds the tasks to the global taskList', function(){
           load(tasks);
-          taskList.should.containEql({
+          global.taskList.should.containEql({
             task1: {
               remote: "localhost",
               cwd: "/",
@@ -174,7 +174,7 @@ describe('load', function(){
 
     describe('when there are already tasks loaded', function() {
       it('concatenates the tasks together', function(){
-        taskList = {
+        global.taskList = {
           task1: {
             remote: "localhost",
             cwd: "/",
@@ -198,7 +198,7 @@ describe('load', function(){
 
         load(tasks);
 
-        taskList.should.containEql({
+        global.taskList.should.containEql({
           task1: {
             remote: "localhost",
             cwd: "/",
@@ -227,7 +227,7 @@ describe('load', function(){
 
         it('adds the tasks to the global taskList', function(){
           load(filepath)
-          taskList.should.containEql({
+          global.taskList.should.containEql({
             "task1" : {
               "remote" : "localhost",
               "cwd" : "/",

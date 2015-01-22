@@ -3,7 +3,7 @@ var exec = require('../../lib/exec');
 
 describe('exec', function(){
   beforeEach(function(){
-    taskList = {
+    global.taskList = {
       task: {
         remote: "localhost",
         cwd: "../test",
@@ -50,7 +50,7 @@ describe('exec', function(){
 
         describe('when remote is some server', function(){
           beforeEach(function(){
-            taskList = {
+            global.taskList = {
               task: {
                 remote: "root@127.0.0.1",
                 cwd: "../test",
