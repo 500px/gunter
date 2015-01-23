@@ -97,7 +97,7 @@ describe('exec', function(){
       describe('when the path is valid', function(){
         describe('when vars match variables in the task', function(){
           it('replaces the variables with values in file', function(){
-            var filepath = '../test/fixtures/exec/valid-vars.json';
+            var filepath = '../../test/fixtures/exec/valid-vars.json';
             var result = exec('task', filepath);
 
             result.should.containEql({
