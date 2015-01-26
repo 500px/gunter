@@ -63,7 +63,7 @@ confused and break.
 Type: `Object` or `String`
 
 You can pass `load` either an Object, or the path to a JSON file containing
-tasks like the example in **Defining Tasks**.
+tasks like the example in [Defining Tasks](#defining-tasks).
 
 ### .clear()
 
