@@ -7,6 +7,23 @@ Wenk.
 Language agnostic task wrapper and loyal servant.  Runs arbitrary shell commands
 in an arbitrary working directory on an arbitrary server.
 
+## Usage
+
+Gunter requires you to define a set of tasks, represented as JSON, which tell
+Gunter what commands to run, and where to run them.
+
+Gunter is currently closed source while its initial feature set is developed.
+For now, to use it, clone the repo into your projects `node_modules` folder:
+```sh
+$ git clone https://github.com/500px/gunter.git
+$ npm install
+```
+
+Then `require` gunter in your modules:
+```js
+var gunter = require('gunter');
+```
+
 ## Defining Tasks
 
 Tasks are represented as JSON objects, taking the form:
@@ -37,11 +54,16 @@ Load tasks for execution.  Evaluates tasks for proper syntax, and will throw
 an error if anything is ill-defined.  You can call `load` several times, and it
 will append tasks to the list of previously defined tasks.
 
+**Note:** Gunter makes use of a global variable to keep track of its defined
+tasks, `global.taskList`.  If you overwrite this global, Gunter will become
+confused and break.
+
 #### tasks
 
 Type: `Object` or `String`
 
-You can pass it either an Object, or the path to a JSON file.
+You can pass `load` either an Object, or the path to a JSON file containing
+tasks like the example in **Defining Tasks**.
 
 ### .clear()
 
