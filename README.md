@@ -7,6 +7,23 @@ Wenk.
 Language agnostic task wrapper and loyal servant.  Runs arbitrary shell commands
 in an arbitrary working directory on an arbitrary server.
 
+## Usage
+
+Gunter requires you to define a set of tasks, represented as JSON, which tell
+Gunter what commands to run, and where to run them.
+
+Gunter is currently closed source while its initial feature set is developed.
+For now, to use it, clone the repo into your projects `node_modules` folder:
+```sh
+$ git clone https://github.com/500px/gunter.git
+$ npm install
+```
+
+Then `require` gunter in your modules:
+```js
+var gunter = require('gunter');
+```
+
 ## Defining Tasks
 
 Tasks are represented as JSON objects, taking the form:
@@ -37,11 +54,16 @@ Load tasks for execution.  Evaluates tasks for proper syntax, and will throw
 an error if anything is ill-defined.  You can call `load` several times, and it
 will append tasks to the list of previously defined tasks.
 
+**Note:** Gunter makes use of a global variable to keep track of its defined
+tasks, `global.taskList`.  If you overwrite this global, Gunter will become
+confused and break.
+
 #### tasks
 
 Type: `Object` or `String`
 
-You can pass it either an Object, or the path to a JSON file.
+You can pass `load` either an Object, or the path to a JSON file containing
+tasks like the example in [Defining Tasks](#defining-tasks).
 
 ### .clear()
 
@@ -49,7 +71,10 @@ Clears all previously defined tasks from memory.
 
 ### .exec(taskname[, vars])
 
-The meat and potatoes.  Executes a task.
+The meat and potatoes.  Executes a task.  `exec` is asynchronous, and will emit
+`command` events whenever a command is executed successfully, and `end` events
+whenever a task is completed.  You should make use of the `emitter` object to
+capture these events.
 
 #### taskname
 
@@ -73,6 +98,28 @@ Example:
   "description" : "Wenk"
 }
 ```
+
+### .emitter
+
+An `EventEmitter` object used by `exec` to asynchronously communicate its state.
+
+When `exec` executes a task, it will emit `command` events whenever a command is
+completed successfully, and `end` events whenever a task is completed.  You can
+capture these events in your module like so:
+```js
+gunter.emitter.on('command', function(command) {
+  // A single command within a task has been completed
+  console.log(command + ' completed successfully!');
+});
+
+gunter.emitter.on('end', function() {
+  // The task has been completed successfully
+  console.log('Task complete!  Hooray!');
+});
+```
+
+To learn more about how events work, check out
+[this tutorial](https://github.com/maxogden/art-of-node#events).
 
 ## Dependencies
 
