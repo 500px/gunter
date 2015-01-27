@@ -43,4 +43,14 @@ describe('gunter', function(){
       gunter.exec.should.be.a.Function;
     });
   });
+
+  describe('emitter', function(){
+    it('should exist', function(){
+      gunter.emitter.should.exist;
+    });
+
+    it('should be an Object', function(){
+      gunter.emitter.should.be.an.Object;
+    });
+  });
 });

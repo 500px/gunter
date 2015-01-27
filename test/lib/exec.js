@@ -1,5 +1,6 @@
 var should = require('should');
 var exec = require('../../lib/exec');
+var emitter = require('../../lib/emitter');
 
 describe('exec', function(){
   beforeEach(function(){
@@ -12,6 +13,10 @@ describe('exec', function(){
         ]
       }
     }
+  });
+
+  afterEach(function(){
+    emitter.removeAllListeners();
   });
 
   describe('when passed only a name', function(){
@@ -36,15 +41,19 @@ describe('exec', function(){
 
       describe('when task is defined', function(){
         describe('when remote is localhost', function(){
-          it('executes the commands locally', function(){
-            var result = exec('task');
-            result.should.containEql({
-              remote: "localhost",
-              cwd: "../test",
-              commands: [
-                "echo {{cool}}!"
-              ]
+          it('executes the commands locally', function(done){
+            var commands = [];
+
+            emitter.on('command', function(command) {
+              commands.push(command);
             });
+
+            emitter.on('end', function(){
+              commands.should.not.be.empty.and.containEql('echo {{cool}}!');
+              done();
+            });
+
+            exec('task');
           });
         });
 
@@ -63,14 +72,18 @@ describe('exec', function(){
 
           // Connection refused, I should find a way to stub this
           xit('executes the commands on the server', function(){
-            var result = exec('task');
-            result.should.containEql({
-              remote: "root@127.0.0.1",
-              cwd: "../test",
-              commands: [
-                "echo {{cool}}!"
-              ]
+            var commands = [];
+
+            emitter.on('command', function(command) {
+              commands.push(command);
             });
+
+            emitter.on('end', function(){
+              commands.should.not.be.empty.and.containEql('echo {{cool}}!');
+              done();
+            });
+
+            exec('task');
           });
         });
       });
@@ -80,15 +93,19 @@ describe('exec', function(){
   describe('when passed vars', function(){
     describe('when vars are an Object', function(){
       describe('when vars match variables in the task', function(){
-        it('replaces the variables with values in var', function(){
-          var result = exec('task', { cool: 'fool' });
-          result.should.containEql({
-            remote: "localhost",
-            cwd: "../test",
-            commands: [
-              "echo fool!"
-            ]
+        it('replaces the variables with values in var', function(done){
+          var commands = [];
+
+          emitter.on('command', function(command) {
+            commands.push(command);
           });
+
+          emitter.on('end', function(){
+            commands.should.not.be.empty.and.containEql('echo fool!');
+            done();
+          });
+
+          exec('task', { cool: 'fool' });
         });
       });
     });
@@ -96,17 +113,20 @@ describe('exec', function(){
     describe('when vars are a String path', function(){
       describe('when the path is valid', function(){
         describe('when vars match variables in the task', function(){
-          it('replaces the variables with values in file', function(){
-            var filepath = '../../test/fixtures/exec/valid-vars.json';
-            var result = exec('task', filepath);
+          it('replaces the variables with values in file', function(done){
+            var commands = [];
 
-            result.should.containEql({
-              remote: "localhost",
-              cwd: "../test",
-              commands: [
-                "echo fool!"
-              ]
+            emitter.on('command', function(command) {
+              commands.push(command);
             });
+
+            emitter.on('end', function(){
+              commands.should.not.be.empty.and.containEql('echo fool!');
+              done();
+            });
+
+            var filepath = '../../test/fixtures/exec/valid-vars.json';
+            exec('task', filepath);
           });
         });
       });
