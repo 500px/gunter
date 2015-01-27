@@ -7,7 +7,7 @@ describe('exec', function(){
     global.taskList = {
       task: {
         remote: "localhost",
-        cwd: "../test",
+        cwd: ".",
         commands: [
           "echo {{cool}}!"
         ]
