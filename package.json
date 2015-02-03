@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "lodash": "^2.4.1",
-    "sequest": "^0.7.0",
-    "shelljs": "^0.3.0"
+    "shelljs": "^0.3.0",
+    "ssh2": "^0.4.1"
   }
 }
