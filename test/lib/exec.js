@@ -42,14 +42,14 @@ describe('exec', function(){
       describe('when task is defined', function(){
         describe('when remote is localhost', function(){
           it('executes the commands locally', function(done){
-            var commands = [];
+            var out = [];
 
-            emitter.on('command', function(command) {
-              commands.push(command);
+            emitter.on('stdout', function(data) {
+              out.push(data);
             });
 
             emitter.on('end', function(){
-              commands.should.not.be.empty.and.containEql('echo {{cool}}!');
+              out.should.not.be.empty.and.containEql('{{cool}}!\n');
               done();
             });
 
@@ -72,14 +72,14 @@ describe('exec', function(){
 
           // Connection refused, I should find a way to stub this
           xit('executes the commands on the server', function(){
-            var commands = [];
+            var out = [];
 
-            emitter.on('command', function(command) {
-              commands.push(command);
+            emitter.on('stdout', function(data) {
+              out.push(data);
             });
 
             emitter.on('end', function(){
-              commands.should.not.be.empty.and.containEql('echo {{cool}}!');
+              out.should.not.be.empty.and.containEql('{{cool}}!\n');
               done();
             });
 
@@ -94,14 +94,14 @@ describe('exec', function(){
     describe('when vars are an Object', function(){
       describe('when vars match variables in the task', function(){
         it('replaces the variables with values in var', function(done){
-          var commands = [];
+          var out = [];
 
-          emitter.on('command', function(command) {
-            commands.push(command);
+          emitter.on('stdout', function(data) {
+            out.push(data);
           });
 
           emitter.on('end', function(){
-            commands.should.not.be.empty.and.containEql('echo fool!');
+            out.should.not.be.empty.and.containEql('fool!\n');
             done();
           });
 
@@ -114,14 +114,14 @@ describe('exec', function(){
       describe('when the path is valid', function(){
         describe('when vars match variables in the task', function(){
           it('replaces the variables with values in file', function(done){
-            var commands = [];
+            var out = [];
 
-            emitter.on('command', function(command) {
-              commands.push(command);
+            emitter.on('stdout', function(data) {
+              out.push(data);
             });
 
             emitter.on('end', function(){
-              commands.should.not.be.empty.and.containEql('echo fool!');
+              out.should.not.be.empty.and.containEql('fool!\n');
               done();
             });
 

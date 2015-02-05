@@ -72,8 +72,8 @@ Clears all previously defined tasks from memory.
 ### .exec(taskname[, vars])
 
 The meat and potatoes.  Executes a task.  `exec` is asynchronous, and will emit
-`command` events whenever a command is executed successfully, and `end` events
-whenever a task is completed.  You should make use of the `emitter` object to
+`end` events whenever a task is completed, and `stdout` events whenever the
+shell surfaces some data.  You should make use of the `emitter` object to
 capture these events.
 
 #### taskname
@@ -103,20 +103,25 @@ Example:
 
 An `EventEmitter` object used by `exec` to asynchronously communicate its state.
 
-When `exec` executes a task, it will emit `command` events whenever a command is
-completed successfully, and `end` events whenever a task is completed.  You can
-capture these events in your module like so:
+When `exec` executes a task, it will emit `end` events whenever a task is
+completed successfully.  You can capture these events in your module like this:
 ```js
-gunter.emitter.on('command', function(command) {
-  // A single command within a task has been completed
-  console.log(command + ' completed successfully!');
-});
-
 gunter.emitter.on('end', function() {
   // The task has been completed successfully
   console.log('Task complete!  Hooray!');
 });
 ```
+
+Gunter also captures and emits all `stdout` from running tasks.  This can be a
+little noisy, so its best to save this for some kind of verbose mode in your
+module.  You can access it like this:
+```js
+gunter.emitter.on('stdout', function(data) {
+  // Something's been spit out to stdout
+  console.log(data);
+});
+```
+
 
 To learn more about how events work, check out
 [this tutorial](https://github.com/maxogden/art-of-node#events).
@@ -124,5 +129,5 @@ To learn more about how events work, check out
 ## Dependencies
 
 + ShellJS for running local commands
-+ Sequest for running remote commands
++ SSH2 for running remote commands
 + Lo-Dash for not hating my life
