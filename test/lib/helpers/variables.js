@@ -30,6 +30,31 @@ describe('variables', function(){
           ]
         });
       });
+
+      describe('when task does not contain any replacable vars', function(){
+        var task = {
+          remote: "localhost",
+          cwd: "../test",
+          commands: [
+            "echo cool!"
+          ]
+        }
+
+        it('should not throw an error', function(){
+          variables.processVars.bind(null, task, { cool: 'fool' }).should.not.throw();
+        });
+
+        it('should return the task unaltered', function(){
+          var result = variables.processVars(task, { cool: 'fool' });
+          result.should.containEql({
+            remote: "localhost",
+            cwd: "../test",
+            commands: [
+              "echo cool!"
+            ]
+          });
+        });
+      });
     });
 
     describe('when passed a String', function(){
