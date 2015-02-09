@@ -28,7 +28,7 @@
     "command",
     "shell",
     "ssh",
-    "tool"
+    "automation"
   ],
   "engines": {
     "node": ">= 0.10.0"

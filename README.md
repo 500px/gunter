@@ -1,4 +1,4 @@
-# Gunter [![Build Status](https://magnum.travis-ci.com/500px/gunter.svg?token=xbayY4WQuW55u1swFMoe&branch=master)](https://magnum.travis-ci.com/500px/gunter)
+# Gunter 
 
 ![Gunter](gunter.png)
 
@@ -12,11 +12,9 @@ in an arbitrary working directory on an arbitrary server.
 Gunter requires you to define a set of tasks, represented as JSON, which tell
 Gunter what commands to run, and where to run them.
 
-Gunter is currently closed source while its initial feature set is developed.
-For now, to use it, clone the repo into your projects `node_modules` folder:
+Install gunter:
 ```sh
-$ git clone https://github.com/500px/gunter.git
-$ npm install
+$ npm install gunter --save
 ```
 
 Then `require` gunter in your modules:
