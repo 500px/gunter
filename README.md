@@ -40,9 +40,17 @@ Tasks are represented as JSON objects, taking the form:
   }
 }
 ```
-
 Notice the [mustache-style](http://mustache.github.io/) variable.  This is
 filled in at execution time by a `vars` object passed to the `exec` function.
+
++ `remote` tells Gunter where to execute.  This can be either `localhost`, or
+  some arbitrary server.  **Note** that Gunter is currently limited to
+  connecting to a remote through `ssh-agent`, and expects a definition of the
+  form `user@example.host.com`
++ `cwd` tells Gunter what directory to execute commands in
++ `commands` is an array of commands to execute.  At run time, these will be
+  concatenated together with `&&`s in the order in which you define them in
+  the array.
 
 ## API
 
@@ -63,7 +71,9 @@ confused and break.
 Type: `Object` or `String`
 
 You can pass `load` either an Object, or the path to a JSON file containing
-tasks like the example in [Defining Tasks](#defining-tasks).
+tasks like the example in [Defining Tasks](#defining-tasks). If passing `load`
+a filepath, its best that you use an absolute path for simplicity, as relative
+paths may not behave as you expect.
 
 ### .clear()
 
