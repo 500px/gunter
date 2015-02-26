@@ -1,7 +1,7 @@
 var should = require('should');
 var load = require('../../lib/load');
 
-describe('load', function(){
+xdescribe('load', function(){
   beforeEach(function(){
     global.taskList = {}
   })
