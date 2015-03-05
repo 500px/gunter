@@ -31,6 +31,20 @@ describe('variables', function(){
         });
       });
 
+      it('does not replace the variables in the global tasklist', function(){
+        global.taskList = {
+          task : {
+            remote: "localhost",
+            cwd: "../test",
+            commands: [
+              "echo {{cool}}!"
+            ]
+          }
+        }
+        variables.processVars(global.taskList.task, { cool: 'fool' });
+        global.taskList.task.commands[0].should.equal("echo {{cool}}!");
+      });
+
       describe('when task does not contain any replacable vars', function(){
         var task = {
           remote: "localhost",
