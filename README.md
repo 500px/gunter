@@ -43,14 +43,44 @@ Tasks are represented as JSON objects, taking the form:
 Notice the [mustache-style](http://mustache.github.io/) variable.  This is
 filled in at execution time by a `vars` object passed to the `exec` function.
 
-+ `remote` tells Gunter where to execute.  This can be either `localhost`, or
-  some arbitrary server.  **Note** that Gunter is currently limited to
-  connecting to a remote through `ssh-agent`, and expects a definition of the
-  form `user@example.host.com`
++ `remote` tells Gunter where to execute (either `localhost`, or some
+  arbitrary server)
 + `cwd` tells Gunter what directory to execute commands in
 + `commands` is an array of commands to execute.  At run time, these will be
   concatenated together with `&&`s in the order in which you define them in
-  the array.
+  the array
+
+## Authentication
+
+Gunter defaults to using **ssh-agent** and **agent forwarding** to autheticate
+to a remote host, but you can optionally pass it a username, password and/or
+path to a private key file. You can also pass in a port if you want to user
+one other than `22` for some reason.
+
+```json
+{
+  "taskname" : {
+    "remote" : "example.com",
+    "cwd"    : "/",
+    "commands: [
+      "echo Holla!"
+    ],
+    "auth"   : {
+      "username"    : "dudeson",
+      "port"        : 22,
+      "password"    : "suP3rSekr3tp@$sw0rd",
+      "privateKey"  : "path/to/private/key"
+    }
+  }
+}
+```
+
+Note that your real password probably shouldn't contain the word "password",
+no matter how creative you are with numbers and symbols.
+
+If several forms of authentication are present, they will be tried in the
+following order until one is successful:
+**Password -> Private Key -> Agent**
 
 ## API
 
@@ -79,12 +109,12 @@ paths may not behave as you expect.
 
 Clears all previously defined tasks from memory.
 
-### .exec(taskname[, vars])
+### .exec(taskname, vars, callback)
 
-The meat and potatoes.  Executes a task.  `exec` is asynchronous, and will emit
-`end` events whenever a task is completed, and `stdout` events whenever the
-shell surfaces some data.  You should make use of the `emitter` object to
-capture these events.
+The meat and potatoes.  Executes a task.  `exec` is asynchronous.  It will emit
+`stdout` events whenever the shell surfaces some data, and you can pass it a
+callback to handle task completion and error.  You should make use of the exported
+`emitter` object to capture the `stdout` events.
 
 #### taskname
 
@@ -96,12 +126,13 @@ The name of the task to execute, as defined in a previously loaded JSON object.
 
 Type: `Object` or `String`
 
-This optional parameter is for filling in variables defined in previously loaded
+This parameter is for filling in variables defined in previously loaded
 JSON tasks.  Like `load`, it accepts either an Object or the path to a JSON
 file.  Here you should pass in keys matching the variable names in your tasks,
-and values containing what they should be replaced by.
+and values containing what they should be replaced by. If you have no variables
+to replace, just pass it an empty object `{}`
 
-Example:
+Example usage:
 ```js
 {
   "name" : "Gunter",
@@ -109,22 +140,39 @@ Example:
 }
 ```
 
+### callback
+
+Type: `Function`
+
+Here you can pass a callback function to execute when `exec` completes.  Gunter
+will call this function in the idiomatic Node style: it will set the first param
+to `nil` and the second to the task object on success, and will set the first
+param to an error message on error.
+
+Your callback should look something like this:
+```js
+function callback(err, task) {
+  if (err) {
+    return console.log(err);
+  }
+
+  // Do something with the task object
+
+  console.log('Task completed successfully!');
+}
+```
+
+It's a good idea to always `return` on `err`.  If you need to brush up on your
+understanding of Node callbacks, take a look at
+[this great tutorial](https://github.com/maxogden/art-of-node#callbacks).
+
 ### .emitter
 
 An `EventEmitter` object used by `exec` to asynchronously communicate its state.
 
-When `exec` executes a task, it will emit `end` events whenever a task is
-completed successfully.  You can capture these events in your module like this:
-```js
-gunter.emitter.on('end', function() {
-  // The task has been completed successfully
-  console.log('Task complete!  Hooray!');
-});
-```
-
-Gunter also captures and emits all `stdout` from running tasks.  This can be a
+Gunter captures and emits all `stdout` from running tasks.  This can be a
 little noisy, so its best to save this for some kind of verbose mode in your
-module.  You can access it like this:
+module, or write it to a log file.  You can access it like this:
 ```js
 gunter.emitter.on('stdout', function(data) {
   // Something's been spit out to stdout

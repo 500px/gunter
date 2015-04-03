@@ -41,23 +41,14 @@ describe('exec', function(){
 
       describe('when task is defined', function(){
         describe('when remote is localhost', function(){
-          it('executes the commands locally', function(done){
-            var out = [];
-
-            emitter.on('stdout', function(data) {
-              out.push(data);
+          it('executes locally', function(){
+            exec('task', {}, function(err, task) {
+              task.should.not.be.empty.and.containEql({ commands: [ 'echo {{cool}}!' ], cwd: '.', remote: 'localhost' });
             });
-
-            emitter.on('end', function(){
-              out.should.not.be.empty.and.containEql('{{cool}}!\n');
-              done();
-            });
-
-            exec('task');
           });
         });
 
-        describe('when remote is some server', function(){
+        xdescribe('when remote is some server', function(){
           beforeEach(function(){
             global.taskList = {
               task: {
@@ -71,19 +62,10 @@ describe('exec', function(){
           });
 
           // Connection refused, I should find a way to stub this
-          xit('executes the commands on the server', function(){
-            var out = [];
-
-            emitter.on('stdout', function(data) {
-              out.push(data);
+          it('executes the commands on the server', function(){
+            exec('task', {}, function(err, task){
+              task.should.not.be.empty.and.containEql({ commands: [ 'echo {{cool}}!' ], cwd: '.', remote: 'localhost' });
             });
-
-            emitter.on('end', function(){
-              out.should.not.be.empty.and.containEql('{{cool}}!\n');
-              done();
-            });
-
-            exec('task');
           });
         });
       });
@@ -93,19 +75,18 @@ describe('exec', function(){
   describe('when passed vars', function(){
     describe('when vars are an Object', function(){
       describe('when vars match variables in the task', function(){
-        it('replaces the variables with values in var', function(done){
-          var out = [];
-
-          emitter.on('stdout', function(data) {
-            out.push(data);
+        it('replaces the variables with values in var', function(){
+          exec('task', { cool: 'fool' }, function(err, task) {
+            task.should.not.be.empty.and.containEql({ commands: [ 'echo fool!' ], cwd: '.', remote: 'localhost' });
           });
+        });
+      });
 
-          emitter.on('end', function(){
-            out.should.not.be.empty.and.containEql('fool!\n');
-            done();
+      describe('when vars does not match variables in the task', function() {
+        it('executes normally', function(){
+          exec('task', { wenk: 'wenk' }, function(err, task) {
+            task.should.not.be.empty.and.containEql({ commands: [ 'echo {{cool}}!' ], cwd: '.', remote: 'localhost' });
           });
-
-          exec('task', { cool: 'fool' });
         });
       });
     });
@@ -113,34 +94,29 @@ describe('exec', function(){
     describe('when vars are a String path', function(){
       describe('when the path is valid', function(){
         describe('when vars match variables in the task', function(){
-          it('replaces the variables with values in file', function(done){
-            var out = [];
-
-            emitter.on('stdout', function(data) {
-              out.push(data);
-            });
-
-            emitter.on('end', function(){
-              out.should.not.be.empty.and.containEql('fool!\n');
-              done();
-            });
-
+          it('replaces the variables with values in file', function(){
             var filepath = '../../test/fixtures/exec/valid-vars.json';
-            exec('task', filepath);
+            exec('task', filepath, function(err, task) {
+              task.should.not.be.empty.and.eql({ commands: [ 'echo fool!' ], cwd: '.', remote: 'localhost' });
+            });
           });
         });
       });
 
       describe('when the path is invalid', function(){
-        it('throws an error', function(){
-          exec.bind(null, 'task', 'wenk').should.throw();
+        it('returns an error', function(){
+          exec('task', 'wenk', function(err, task) {
+            err.should.not.be.Nil;
+          });
         });
       });
     });
 
     describe('when vars are neither an Object nor a String path', function(){
-      it('throws an error', function(){
-        exec.bind(null, 'task', 1).should.throw();
+      it('returns an error', function(){
+        exec('task', 1, function(err, task) {
+          err.should.not.be.Nil;
+        });
       });
     });
   });
