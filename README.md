@@ -54,18 +54,18 @@ filled in at execution time by a `vars` object passed to the `exec` function.
 
 Gunter defaults to using **ssh-agent** and **agent forwarding** to autheticate
 to a remote host, but you can optionally pass it a username, password and/or
-path to a private key file. You can also pass in a port if you want to user
+path to a private key file. You can also pass in a port if you want to use
 one other than `22` for some reason.
 
 ```json
 {
-  "taskname" : {
-    "remote" : "example.com",
-    "cwd"    : "/",
-    "commands: [
+  "taskname"   : {
+    "remote"   : "example.com",
+    "cwd"      : "/",
+    "commands" : [
       "echo Holla!"
     ],
-    "auth"   : {
+    "auth"     : {
       "username"    : "dudeson",
       "port"        : 22,
       "password"    : "suP3rSekr3tp@$sw0rd",
@@ -170,13 +170,13 @@ understanding of Node callbacks, take a look at
 
 An `EventEmitter` object used by `exec` to asynchronously communicate its state.
 
-Gunter captures and emits all `stdout` from running tasks.  This can be a
-little noisy, so its best to save this for some kind of verbose mode in your
+Gunter captures and emits all `stdout` from running tasks as a buffer.  This can 
+be a little noisy, so its best to save this for some kind of verbose mode in your
 module, or write it to a log file.  You can access it like this:
 ```js
 gunter.emitter.on('stdout', function(data) {
   // Something's been spit out to stdout
-  console.log(data);
+  console.log(data.toString('utf8');
 });
 ```
 
@@ -189,3 +189,30 @@ To learn more about how events work, check out
 + ShellJS for running local commands
 + SSH2 for running remote commands
 + Lo-Dash for not hating my life
+
+## License
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2015 500px
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
+

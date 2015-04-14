@@ -8,7 +8,7 @@ describe('variables', function(){
     commands: [
       "echo {{cool}}!"
     ]
-  }
+  };
 
   describe('processVars', function(){
     it('should be defined', function(){
@@ -40,7 +40,7 @@ describe('variables', function(){
               "echo {{cool}}!"
             ]
           }
-        }
+        };
         variables.processVars(global.taskList.task, { cool: 'fool' });
         global.taskList.task.commands[0].should.equal("echo {{cool}}!");
       });
@@ -52,7 +52,7 @@ describe('variables', function(){
           commands: [
             "echo cool!"
           ]
-        }
+        };
 
         it('should not throw an error', function(){
           variables.processVars.bind(null, task, { cool: 'fool' }).should.not.throw();

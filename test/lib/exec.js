@@ -12,7 +12,7 @@ describe('exec', function(){
           "echo {{cool}}!"
         ]
       }
-    }
+    };
   });
 
   afterEach(function(){
@@ -58,7 +58,7 @@ describe('exec', function(){
                   "echo {{cool}}!"
                 ]
               }
-            }
+            };
           });
 
           // Connection refused, I should find a way to stub this
@@ -106,7 +106,7 @@ describe('exec', function(){
       describe('when the path is invalid', function(){
         it('returns an error', function(){
           exec('task', 'wenk', function(err, task) {
-            err.should.not.be.Nil;
+            err.should.not.be.null;
           });
         });
       });
@@ -115,7 +115,7 @@ describe('exec', function(){
     describe('when vars are neither an Object nor a String path', function(){
       it('returns an error', function(){
         exec('task', 1, function(err, task) {
-          err.should.not.be.Nil;
+          err.should.not.be.null;
         });
       });
     });
