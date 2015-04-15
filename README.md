@@ -52,10 +52,13 @@ filled in at execution time by a `vars` object passed to the `exec` function.
 
 ## Authentication
 
-Gunter defaults to using **ssh-agent** and **agent forwarding** to autheticate
-to a remote host, but you can optionally pass it a username, password and/or
-path to a private key file. You can also pass in a port if you want to use
-one other than `22` for some reason.
+Gunter supports several authentication strategies (**password**, **private key**, and
+**agent auth**). You can optionally add an `auth` object to your task definitions
+to specify a `username`, `password`, `privateKey`, and `port`.  If you exclude
+some or all of these parameters, Gunter will use agent authentication, on port
+22, and set the username to the executing user's username.
+
+Here's an example of a task definition that includes an `auth` object:
 
 ```json
 {
