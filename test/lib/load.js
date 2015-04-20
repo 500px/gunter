@@ -3,8 +3,8 @@ var load = require('../../lib/load');
 
 describe('load', function(){
   beforeEach(function(){
-    global.taskList = {}
-  })
+    global.taskList = {};
+  });
 
   describe('when passed an object', function(){
     describe('when object is valid', function(){
@@ -18,7 +18,7 @@ describe('load', function(){
             "echo Hello, my name is {{name}}"
           ]
         }
-      }
+      };
 
       it('adds the tasks to the global taskList', function(){
         load(tasks);
@@ -46,7 +46,7 @@ describe('load', function(){
             "echo Hello, my name is {{name}}"
           ]
         }
-      }
+      };
 
       it('throws an error', function(){
         load.bind(null, tasks).should.throw();
@@ -63,7 +63,7 @@ describe('load', function(){
             "echo Hello, my name is {{name}}"
           ]
         }
-      }
+      };
 
       it('throws an error', function(){
         load.bind(null, tasks).should.throw();
@@ -76,7 +76,7 @@ describe('load', function(){
           remote: "localhost",
           cwd: "/"
         }
-      }
+      };
 
       it('throws an error', function(){
         load.bind(null, tasks).should.throw();
@@ -94,7 +94,7 @@ describe('load', function(){
             command3: "echo Hello, my name is {{name}}"
           }
         }
-      }
+      };
 
       it('throws an error', function(){
         load.bind(null, tasks).should.throw();
@@ -122,7 +122,7 @@ describe('load', function(){
               "echo Hello, my name is {{name}}"
             ]
           }
-        }
+        };
 
         it('adds the tasks to the global taskList', function(){
           load(tasks);
@@ -164,7 +164,7 @@ describe('load', function(){
             remote: "localhost",
             cwd: "/"
           }
-        }
+        };
 
         it('throws an error', function(){
           load.bind(null, tasks).should.throw();
@@ -184,7 +184,7 @@ describe('load', function(){
               "echo Hello, my name is {{name}}"
             ]
           }
-        }
+        };
 
         var tasks = {
           task2: {
@@ -194,7 +194,7 @@ describe('load', function(){
               "echo I'm a task!"
             ]
           }
-        }
+        };
 
         load(tasks);
 
@@ -226,7 +226,7 @@ describe('load', function(){
         var filepath = '../test/fixtures/load/valid.json';
 
         it('adds the tasks to the global taskList', function(){
-          load(filepath)
+          load(filepath);
           global.taskList.should.containEql({
             "task1" : {
               "remote" : "localhost",
