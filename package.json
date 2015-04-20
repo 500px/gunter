@@ -1,6 +1,6 @@
 {
   "name": "gunter",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "description": "Language agnostic task wrapper",
   "author": "500px",
