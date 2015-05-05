@@ -1,6 +1,6 @@
 {
   "name": "gunter",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "license": "MIT",
   "description": "Language agnostic task wrapper",
   "author": "500px",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "mocha": "^2.2.1",
-    "should": "^5.2.0"
+    "should": "^6.0.1"
   },
   "dependencies": {
     "lodash": "^3.1.0",

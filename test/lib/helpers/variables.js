@@ -99,5 +99,66 @@ describe('variables', function(){
         variables.processVars.bind(null, task, 2).should.throw();
       });
     });
+
+    describe('when defaults are set in the task', function(){
+      var taskDefaults = {
+        remote: "localhost",
+        cwd: "../test",
+        commands: [
+          "echo {{cool}}!"
+        ],
+        defaults: {
+          cool: "tool"
+        }
+      };
+
+      describe('when variable is defined in task, but not passed in', function(){
+        it('replaces the variable with the default value', function(){
+          var result = variables.processVars(taskDefaults, {});
+          result.should.containEql({
+            remote: "localhost",
+            cwd: "../test",
+            commands: [
+              "echo tool!"
+            ],
+            defaults: {
+              cool: "tool"
+            }
+          });
+        });
+      });
+
+      describe('when vars object contains empty variables', function(){
+        it('should replace the var with the default', function(){
+          var result = variables.processVars(taskDefaults, { cool: '' });
+          result.should.containEql({
+            remote: "localhost",
+            cwd: "../test",
+            commands: [
+              "echo tool!"
+            ],
+            defaults: {
+              cool: "tool"
+            }
+          });
+        });
+      });
+
+      describe('when vars object contains valid vars', function(){
+        it('should replace the var with passed in var, not the default', function(){
+          var result = variables.processVars(taskDefaults, { cool: 'fool' });
+          result.should.containEql({
+            remote: "localhost",
+            cwd: "../test",
+            commands: [
+              "echo fool!"
+            ],
+            defaults: {
+              cool: "tool"
+            }
+          });
+        });
+      });
+    });
   });
 });
