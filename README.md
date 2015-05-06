@@ -26,7 +26,31 @@ var gunter = require('gunter');
 
 ## Defining Tasks
 
-Tasks are represented as JSON objects, taking the form:
+Tasks are represented as JSON objects.  Here is a basic task:
+```json
+{
+  "taskname" : {
+    "remote" : "localhost",
+    "cwd" : "/",
+    "commands" : [
+      "echo I'm a task!",
+      "echo I'm another task!",
+      "echo Hello, my name is Gunter!"
+    ]
+  }
+}
+```
+
++ `remote` tells Gunter where to execute (either `localhost`, or some
+  arbitrary server)
++ `cwd` tells Gunter what directory to execute commands in
++ `commands` is an array of commands to execute.  At run time, these will be
+  concatenated together with `&&`s in the order in which you define them in
+  the array
+
+## Variables
+
+Take a look at this task definition:
 ```json
 {
   "taskname" : {
@@ -36,19 +60,21 @@ Tasks are represented as JSON objects, taking the form:
       "echo I'm a task!",
       "echo I'm another task!",
       "echo Hello, my name is {{name}}"
-    ]
+    ],
+    "defaults" : {
+      "name" : "Gunter"
+    }
   }
 }
 ```
-Notice the [mustache-style](http://mustache.github.io/) variable.  This is
-filled in at execution time by a `vars` object passed to the `exec` function.
 
-+ `remote` tells Gunter where to execute (either `localhost`, or some
-  arbitrary server)
-+ `cwd` tells Gunter what directory to execute commands in
-+ `commands` is an array of commands to execute.  At run time, these will be
-  concatenated together with `&&`s in the order in which you define them in
-  the array
+There are a couple differences from the one in [Defining Tasks](#defining-tasks).
+Notice the [mustache-style](http://mustache.github.io/) variable `{{name}}`.  This
+is filled in at execution time by a `vars` object passed to the `exec` function.
+You can also optionally include a `defaults` object in your task definition if
+you'd like to have defaults set for your variables, in case you don't pass anything
+in to `exec`.  Otherwise, these variables will default to an empty string.
+
 
 ## Authentication
 
@@ -133,7 +159,8 @@ This parameter is for filling in variables defined in previously loaded
 JSON tasks.  Like `load`, it accepts either an Object or the path to a JSON
 file.  Here you should pass in keys matching the variable names in your tasks,
 and values containing what they should be replaced by. If you have no variables
-to replace, just pass it an empty object `{}`
+to replace, just pass it an empty object `{}`.  Note that any variables you pass
+in here that aren't actually defined in your task will just get eaten at runtime.
 
 Example usage:
 ```js
@@ -173,7 +200,7 @@ understanding of Node callbacks, take a look at
 
 An `EventEmitter` object used by `exec` to asynchronously communicate its state.
 
-Gunter captures and emits all `stdout` from running tasks as a buffer.  This can 
+Gunter captures and emits all `stdout` from running tasks as a buffer.  This can
 be a little noisy, so its best to save this for some kind of verbose mode in your
 module, or write it to a log file.  You can access it like this:
 ```js
@@ -218,4 +245,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
-
