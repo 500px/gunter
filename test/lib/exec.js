@@ -76,7 +76,7 @@ describe('exec', function(){
     describe('when vars are an Object', function(){
       describe('when vars match variables in the task', function(){
         it('replaces the variables with values in var', function(){
-          exec('task', { cool: 'fool' }, function(err, task) {
+          exec('task', null, { cool: 'fool' }, function(err, task) {
             task.should.not.be.empty.and.containEql({ commands: [ 'echo fool!' ], cwd: '.', remote: 'localhost' });
           });
         });
@@ -84,7 +84,7 @@ describe('exec', function(){
 
       describe('when vars does not match variables in the task', function() {
         it('executes normally', function(){
-          exec('task', { wenk: 'wenk' }, function(err, task) {
+          exec('task', null, { wenk: 'wenk' }, function(err, task) {
             task.should.not.be.empty.and.containEql({ commands: [ 'echo {{cool}}!' ], cwd: '.', remote: 'localhost' });
           });
         });
@@ -96,7 +96,7 @@ describe('exec', function(){
         describe('when vars match variables in the task', function(){
           it('replaces the variables with values in file', function(){
             var filepath = '../../test/fixtures/exec/valid-vars.json';
-            exec('task', filepath, function(err, task) {
+            exec('task', null, filepath, function(err, task) {
               task.should.not.be.empty.and.eql({ commands: [ 'echo fool!' ], cwd: '.', remote: 'localhost' });
             });
           });
@@ -105,7 +105,7 @@ describe('exec', function(){
 
       describe('when the path is invalid', function(){
         it('returns an error', function(){
-          exec('task', 'wenk', function(err, task) {
+          exec('task', null, 'wenk', function(err, task) {
             err.should.not.be.null;
           });
         });
@@ -114,7 +114,57 @@ describe('exec', function(){
 
     describe('when vars are neither an Object nor a String path', function(){
       it('returns an error', function(){
-        exec('task', 1, function(err, task) {
+        exec('task', null, 1, function(err, task) {
+          err.should.not.be.null;
+        });
+      });
+    });
+  });
+
+  describe('event name', function(){
+    describe('when event is a String', function(){
+      it('emits on the event passed and not stdout', function(){
+        var test = '';
+        var stdout = '';
+
+        emitter.on('test', function(data) {
+          test = test + data;
+        });
+
+        emitter.on('stdout', function(data) {
+          stdout = stdout + data;
+        });
+
+        exec('task', 'test', {}, function(err, task) {
+          test.should.not.be.empty;
+          stdout.should.be.empty;
+        });
+      });
+    });
+
+    describe('when event is null', function(){
+      it('emits on the default stdout event', function(){
+        var test = '';
+        var stdout = '';
+
+        emitter.on('test', function(data) {
+          test = test + data;
+        });
+
+        emitter.on('stdout', function(data) {
+          stdout = stdout + data;
+        });
+
+        exec('task', null, {}, function(err, task) {
+          test.should.be.empty;
+          stdout.should.not.be.empty;
+        });
+      });
+    });
+
+    describe('when event is neither a String nor null', function(){
+      it('returns an error', function(){
+        exec('task', 1, {}, function(err, task) {
           err.should.not.be.null;
         });
       });
