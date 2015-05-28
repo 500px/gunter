@@ -1,5 +1,5 @@
 # Gunter
-[![Build Status](https://img.shields.io/travis/500px/gunter.svg?style=flat-square)](https://travis-ci.org/500px/gunter.svg?branch=master)
+[![Build Status](https://img.shields.io/travis/500px/gunter.svg?style=flat-square)](https://travis-ci.org/500px/gunter)
 [![Dependencies](https://img.shields.io/david/500px/gunter.svg?style=flat-square)](https://david-dm.org/500px/gunter)
 
 ![Gunter](gunter.png)
