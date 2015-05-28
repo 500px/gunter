@@ -19,30 +19,36 @@ describe('exec', function(){
     emitter.removeAllListeners();
   });
 
-  describe('when passed only a name', function(){
+  describe('name', function(){
     describe('when name is not a String', function(){
-      it('throws an error', function(){
-        exec.bind(null, 1).should.throw();
+      it('returns an error', function(){
+        exec(1, null, {}, function(err, task){
+          err.should.not.be.null;
+        });
       });
     });
 
     describe('when name is an empty String', function(){
-      it('throws an error', function(){
-        exec.bind(null, '').should.throw();
+      it('returns an error', function(){
+        exec('', null, {}, function(err, task){
+          err.should.not.be.null;
+        });
       });
     });
 
     describe('when name is well formed', function(){
       describe('when task is not defined', function(){
-        it('throws an error', function(){
-          exec.bind(null,'wenk').should.throw();
+        it('returns an error', function(){
+          exec('wenk', null, {}, function(err, task){
+            err.should.not.be.null;
+          });
         });
       });
 
       describe('when task is defined', function(){
         describe('when remote is localhost', function(){
           it('executes locally', function(){
-            exec('task', {}, function(err, task) {
+            exec('task', null, {}, function(err, task) {
               task.should.not.be.empty.and.containEql({ commands: [ 'echo {{cool}}!' ], cwd: '.', remote: 'localhost' });
             });
           });
@@ -63,7 +69,7 @@ describe('exec', function(){
 
           // Connection refused, I should find a way to stub this
           it('executes the commands on the server', function(){
-            exec('task', {}, function(err, task){
+            exec('task', null, {}, function(err, task){
               task.should.not.be.empty.and.containEql({ commands: [ 'echo {{cool}}!' ], cwd: '.', remote: 'localhost' });
             });
           });
