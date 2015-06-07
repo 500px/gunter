@@ -9,6 +9,8 @@ Wenk.
 Language agnostic task wrapper and loyal servant.  Runs arbitrary shell commands
 in an arbitrary working directory on an arbitrary server.
 
+[Upgrading from 0.3.x to 0.4.x](https://github.com/500px/gunter/wiki/Upgrading-from-0.3.x-to-0.4.x)
+
 ## Usage
 
 Gunter requires you to define a set of tasks, represented as JSON, which tell
@@ -138,18 +140,30 @@ paths may not behave as you expect.
 
 Clears all previously defined tasks from memory.
 
-### .exec(taskname, vars, callback)
+### .exec(taskname, event, vars, callback)
 
 The meat and potatoes.  Executes a task.  `exec` is asynchronous.  It will emit
-`stdout` events whenever the shell surfaces some data, and you can pass it a
-callback to handle task completion and error.  You should make use of the exported
-`emitter` object to capture the `stdout` events.
+events against the `event` tag whenever the shell surfaces some data, and you can
+pass it a callback to handle task completion and error.  You should make use of
+the exported `emitter` object to capture the `output` events.
 
 #### taskname
 
 Type: `String`
 
 The name of the task to execute, as defined in a previously loaded JSON object.
+
+#### event
+
+Type: `String`
+
+Tells Gunter what event to emit on `output` (`stdout` and `stderr`).  If you
+leave this value `null`, it'll default to emitting on the `'output'` event.  Make
+sure you set up an event listener for the event passed here as described in
+[.emitter](#-emitter) below before calling this function.
+
+**Important note**: If you'll be running more than one task concurrently, you'll
+probably want to give each a unique event you can monitor.
 
 #### vars
 
@@ -200,12 +214,19 @@ understanding of Node callbacks, take a look at
 
 An `EventEmitter` object used by `exec` to asynchronously communicate its state.
 
-Gunter captures and emits all `stdout` from running tasks as a buffer.  This can
+Gunter captures and emits all output from running tasks as a buffer.  This can
 be a little noisy, so its best to save this for some kind of verbose mode in your
-module, or write it to a log file.  You can access it like this:
+module, or write it to a log file.  
+
+How you should access these events depends on how you'll be calling `exec`.  If
+you're going to pass `exec` an `event`, setup a listener for that event.  If you're
+not concerned about concurrency, aren't passing a value to `event`, and want
+everything to report on one event, setup a listener for the default event, `'output'`
+
+You can access it like this:
 ```js
-gunter.emitter.on('stdout', function(data) {
-  // Something's been spit out to stdout
+gunter.emitter.on('eventName', function(data) {
+  // Something's been spit out
   console.log(data.toString('utf8');
 });
 ```
