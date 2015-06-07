@@ -129,41 +129,41 @@ describe('exec', function(){
 
   describe('event name', function(){
     describe('when event is a String', function(){
-      it('emits on the event passed and not stdout', function(){
+      it('emits on the event passed and not output', function(){
         var test = '';
-        var stdout = '';
+        var output = '';
 
         emitter.on('test', function(data) {
           test = test + data;
         });
 
-        emitter.on('stdout', function(data) {
-          stdout = stdout + data;
+        emitter.on('output', function(data) {
+          output = output + data;
         });
 
         exec('task', 'test', {}, function(err, task) {
           test.should.not.be.empty;
-          stdout.should.be.empty;
+          output.should.be.empty;
         });
       });
     });
 
     describe('when event is null', function(){
-      it('emits on the default stdout event', function(){
+      it('emits on the default output event', function(){
         var test = '';
-        var stdout = '';
+        var output = '';
 
         emitter.on('test', function(data) {
           test = test + data;
         });
 
-        emitter.on('stdout', function(data) {
-          stdout = stdout + data;
+        emitter.on('output', function(data) {
+          output = output + data;
         });
 
         exec('task', null, {}, function(err, task) {
           test.should.be.empty;
-          stdout.should.not.be.empty;
+          output.should.not.be.empty;
         });
       });
     });
