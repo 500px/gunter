@@ -1,6 +1,6 @@
 {
   "name": "gunter",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "license": "MIT",
   "description": "Language agnostic task wrapper",
   "author": "500px",
@@ -8,6 +8,10 @@
     {
       "name": "Devon Noel de Tilly",
       "email": "devon@500px.com"
+    },
+    {
+      "name": "Paul Liu",
+      "email": "pliu@500px.com"
     }
   ],
   "main": "lib/gunter.js",
