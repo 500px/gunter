@@ -4,6 +4,7 @@ var emitter = require('../../lib/emitter');
 
 describe('exec', function(){
   beforeEach(function(){
+    emitter.removeAllListeners();
     global.taskList = {
       task: {
         remote: "localhost",
@@ -13,10 +14,6 @@ describe('exec', function(){
         ]
       }
     };
-  });
-
-  afterEach(function(){
-    emitter.removeAllListeners();
   });
 
   describe('name', function(){
